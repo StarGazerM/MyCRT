@@ -7,7 +7,7 @@ MyCRT是一个Linux下的能够穿透NAT的远程管理软件,是我的毕业设
 ##测试开发环境
 - Python3.5.3
 - Mint Linux16
-- redis3.2.8
+- redis3.2
 - zeromq4.2.1
 - mongodb3.4
 - tornado4.4.2
