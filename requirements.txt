@@ -1,0 +1,8 @@
+redis
+pexpect
+motor
+paramiko
+tornado
+pyzmq
+pycket
+asyncssh

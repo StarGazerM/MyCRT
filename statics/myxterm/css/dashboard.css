@@ -1,0 +1,17 @@
+.sidebar {
+    padding-left: 0;
+    padding-right: 0;
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-right: 1px solid #eee;
+}
+
+.bg-faded {
+    background-color: #f7f7f7;
+}

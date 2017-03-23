@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="./css/dashboard.css">-->
+</head>
+
+<body>
+
+    <div id="dashboard">
+        <nav class="navbar navbar-toggleable-md navbar-light" style="padding-left: 3%; padding-right: 10%; background-color: #f7f7f7;">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">MyCRT</a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <!--<a class="nav-link" href="#">当前CRT<span class="sr-only">(current)</span></a>-->
+                        <router-link to="/current-crt" class="nav-link">当前CRT<span class="sr-only">(current)</span></router-link>
+                    </li>
+                    <li class="nav-item">
+                        <!--<a class="nav-link" href="#">管理CRT</a>-->
+                        <router-link to="/crt-manager" class="nav-link">管理CRT</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">docker管理</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav my-auto">
+                    <li class="nav-item">
+                        <a class="nav-link">logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <router-view></router-view>
+        </div>
+    </div>
+
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="{{ static_url('myxterm/dist/build2.js') }}"></script>
+</body>
+
+</html>
