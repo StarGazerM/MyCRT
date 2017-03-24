@@ -47,3 +47,8 @@
     background-color: #f7f7f7;
 }
 </style>
+
+
+<script>
+export default {}    
+</script>

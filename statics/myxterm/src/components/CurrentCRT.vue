@@ -1,18 +1,26 @@
 <template>
-    <div id="terminal"></div>
+    <div id="terminal-container"></div>
 </template>
 
 <script>
 import Bus from '../bus.js';
+import Terminal from 'xterm'
+import '../attach.js'
+import 'xterm/dist/xterm.css';
 
-expoort default {
-    data: {
-        term: new Terminal({ cursorBlink: true }),
-        socket: new WebSocket("ws://127.0.0.1:8888/shell?username=");
+export default {
+    // data: {
+    //     term: new Terminal({ cursorBlink: true }),
+    //     socket: new WebSocket("ws://127.0.0.1:8888/shell"),
+    // },
+    data: function(){
+        return {
+            term: new Terminal({ cursorBlink: true }),
+            socket: new WebSocket("ws://127.0.0.1:8888/shell"),
+        }
     },
 
     created: function(){
-        this.createTerminal()
         Bus.$on('xtermChange', (id) => {
             this.socket.close()
             this.socket = new WebSocket("ws://127.0.0.1:8888/shell?username=" + id);
@@ -20,17 +28,24 @@ expoort default {
         })
     },
 
+    mounted:function(){
+        this.createTerminal()
+    },
+
+    destroyed:function(){
+        this.socket.close()
+    },
+
     methods: {
         createTerminal: function(){
             // this.socket = new WebSocket("ws://127.0.0.1:8888/shell?username=" + id);
-            this.term.open(document.getElementById('#terminal'));
-            this.term.writeln('Hello world ');
-            this.term.fit();
+            this.term.open(document.getElementById('terminal-container'));
+            console.log(document.getElementById('terminal-container'));
     
-            this.socket.onopen = runRealTerminal;
-            this.socket.onclose = runFakeTerminal;
-            this.socket.onerror = runFakeTerminal;
-        }
+            this.socket.onopen = this.runRealTerminal;
+            this.socket.onclose = this.runFakeTerminal;
+            this.socket.onerror = this.runFakeTerminal;
+        },
 
         runRealTerminal: function(){
             this.term.attach(this.socket);
@@ -69,7 +84,7 @@ expoort default {
                 } else if (printable) {
                     this.term.write(key);
                 }
-            });s
+            });
 
             this.term.on('paste', function(data, ev) {
                 this.term.write(data);
