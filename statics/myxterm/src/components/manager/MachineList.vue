@@ -4,7 +4,7 @@
     <div class="col">
         <ul class="list-group">
             <li class="list-group-item" v-for="m in machines">
-                {{m['username']}}
+                <a v-on:click="setXtermName(m.username)">{{m['username']}}</a>
             </li>
         </ul>
     </div>
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import Bus from '../../bus.js';
+
     export default {
         data: function(){
             return {
@@ -30,6 +32,11 @@
                         console.log(data[0])
                         this.machines = data
                     })
+        }
+        methods: {
+            setXtermName: function(id){
+                Bus.$emit('xtermChange', id)
+            }
         }
     }
 </script>
