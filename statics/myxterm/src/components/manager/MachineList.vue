@@ -4,7 +4,13 @@
     <div class="col">
         <ul class="list-group">
             <li class="list-group-item" v-for="m in machines">
-                {{m['username']}}
+                <div class="row">
+                    <div class='col'>
+                        {{m['username']}}
+                    </div>
+                    <div class="col-auto">isOnline?={{m.isOnline}}</div>
+                    <div class="col"><button type="button" class="btn btn-warning" v-on:click="setXtermName(m.username)" aria-disabled="{{m.isOnline}}">link</button></div>
+                </div>
             </li>
         </ul>
     </div>
@@ -15,22 +21,31 @@
 </template>
 
 <script>
+    import Bus from '../../bus.js';
+
     export default {
-        data: function(){
+        data: function() {
             return {
                 machines: []
             }
         },
-        created: function(){
+        mounted: function() {
             fetch("http://127.0.0.1:8888/u/machine_list", {
-                     credentials: 'include'
-            })
-                    .then((response) => {
-                        return response.json();
-                    }).then((data) => {
-                        console.log(data[0])
-                        this.machines = data
-                    })
+                    credentials: 'include',
+                })
+                .then((response) => {
+                    console.log(response)
+                    return response.json()
+                }).then((data) => {
+                    console.log(data[0])
+                    this.machines = data
+                })
+        },
+
+        methods: {
+            setXtermName: function(id) {
+                Bus.$emit('xtermChange', id)
+            }
         }
     }
 </script>

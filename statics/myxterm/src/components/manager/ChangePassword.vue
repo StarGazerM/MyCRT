@@ -1,3 +1,7 @@
 <template>
-Not implement yet ! 
+<div>Not implement yet ! </div>
 </template>
+
+<script>
+    export default{}
+</script>

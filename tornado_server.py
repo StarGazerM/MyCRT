@@ -135,38 +135,27 @@ class ShellHandler(tornado.websocket.WebSocketHandler):
         return user
 
     def open(self):
-        # self.read_from_zeromq()
-        print("ssh opened")
         if not self.current_user:
             self.write_message('please login')
             self.close()
             return
-        self.socket.connect('ipc://' + self.current_user['username'])
+        username = self.get_argument(
+            'username', default=self.current_user['username'])
+        self.socket.connect('ipc://' + username)
         self.zstream = zmqstream.ZMQStream(self.socket)
         self.zstream.on_recv(self.handle_recv)
+        print("ssh opened connected to " + username)
 
     def on_message(self, message):
         # self.socket.send_string(message)
         self.zstream.send_string(message)
 
     def on_close(self):
-        print('close')
+        self.zstream.close()
         print("WebSocket closed")
 
     def check_origin(self, origin):
         return True
-
-    @run_on_executor
-    def read_from_zeromq(self):
-        '''
-            sychrounize read from zmq
-        '''
-        while True:
-            try:
-                data = self.socket.recv()
-            except socket.timeout:
-                pass
-            self.write_message(data)
 
     def handle_recv(self, msgs):
         '''
@@ -191,8 +180,9 @@ class ListMachineHandler(AuthencatedRequiredHandler):
             #                  'isOnline': user['isOnline']})
             machines.append(user)
 
-        print(machines)
+        print(bson.json_util.dumps(machines))
         self.write(bson.json_util.dumps(machines))
+        print("write")
 
 
 class AddMachineHandler(AuthencatedRequiredHandler):
