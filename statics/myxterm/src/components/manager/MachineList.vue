@@ -22,6 +22,7 @@
 
 <script>
     import Bus from '../../bus.js';
+    import Config from '../../config.js';
 
     export default {
         data: function() {
@@ -30,7 +31,7 @@
             }
         },
         mounted: function() {
-            fetch("http://127.0.0.1:8888/u/machine_list", {
+            fetch( Config.BaseURL + "/u/machine_list", {
                     credentials: 'include',
                 })
                 .then((response) => {

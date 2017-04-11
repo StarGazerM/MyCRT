@@ -118,7 +118,7 @@ class XtermPageHandler(AuthencatedRequiredHandler):
         self.render('cmd.html')
 
 
-class ShellHandler(tornado.websocket.WebSocketHandler):
+class ShellHandler(tornado.websocket.WebSocketHandler, SessionMixin):
     '''
         the handler for the websocket request from xterm.js in the front end
     '''
@@ -133,22 +133,22 @@ class ShellHandler(tornado.websocket.WebSocketHandler):
         self.zstream = None
 
     def get_current_user(self):
-        user = self.get_secure_cookie('shell_user')
+        user = self.session.get("user")
         return user
 
     def open(self):
-        # self.current_user = self.get_current_user()
-        # if not self.current_user:
-        #     self.write_message('please login')
-        #     self.close()
-        #     return
-        default_name = self.get_secure_cookie("shell_user")
-        print(default_name)
-        if not default_name:
+        self.current_user = self.get_current_user()
+        if not self.current_user:
+            self.write_message('please login')
             self.close()
             return
+        # default_name = self.get_secure_cookie("shell_user")
+        # print(default_name)
+        # if not default_name:
+        #     self.close()
+        #     return
         username = self.get_argument(
-            'username', default=default_name)
+            'username', default=self.current_user["username"])
         self.socket.connect('ipc://' + username)
         self.zstream = zmqstream.ZMQStream(self.socket)
         self.zstream.on_recv(self.handle_recv)

@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import BaseURL from '../../config.js'
+
     export default{
         data: {
             username: '',
@@ -44,7 +46,7 @@
                     return
                 } 
                 console.log(this.username)
-                fetch('http://127.0.0.1:8888/u/add_machine', {
+                fetch(BaseURL + '/u/add_machine', {
                     method: 'POST',
                     credentials: 'include',
                     headers: {

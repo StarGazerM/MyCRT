@@ -27,19 +27,20 @@ import Bus from '../bus.js';
 import Terminal from 'xterm'
 import '../attach.js'
 import 'xterm/dist/xterm.css';
+import Config from '../config.js'
 
 export default {
     data: function(){
         return {
             term: new Terminal({ cursorBlink: true }),
-            socket: new WebSocket("ws://127.0.0.1:8888/shell"),
+            socket: new WebSocket(Config.WebsocketURL + '/shell'),
         }
     },
 
     created: function(){
         Bus.$on('xtermChange', (id) => {
             this.socket.close()
-            this.socket = new WebSocket("ws://127.0.0.1:8888/shell?username=" + id);
+            this.socket = new WebSocket(Config.WebsocketURL + "/shell?username=" + id);
             this.createTerminal();
         })
     },

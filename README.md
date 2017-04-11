@@ -61,3 +61,109 @@ c语言实现服务端尝试实用libssh和openssl来重写sshd服务来实现�
 zeromq部分可以独立展开支撑更多的功能
 把session的管理做到mongodb里面
 
+
+# 安装部署
+
+-----------------------
+## 服务器开发环境
+
+### 配置python环境
+1. 安装pyenv
+```bash
+    curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash  
+```
+2. 在~/.bashrc末尾加入，配置pyenv环境变量，之后source ~/.bashrc
+```
+    export PATH="/home/stargazer/.pyenv/bin:$PATH"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+```
+
+3.安装必要依赖(根据自己的系统决定)
+```bash
+    sudo apt-get install build-essential
+    sudo apt-get install libreadline-dev
+    sudo apt-get install libssl-dev
+```
+
+4. 安装python
+```bash
+    pyenv install -v 3.5.3
+```
+
+5. 设定全局python版本
+```bash
+    pyenv global 3.5.3
+```
+
+6.安装python依赖库,在项目根目录下执行
+```bash
+    pip install -r requirements.txt
+```
+
+### 安装 zeromq
+在项目的other目录下解压zeromq然后执行
+```bash
+    ./configure
+    sudo make install
+```
+### 安装启动redis
+1. 解压到~/目录下
+
+```bash
+    sudo make install
+```
+
+2. 启动redis
+```bash
+    nohup redis-server&
+``` 
+
+如果出现redis在小内存机器上的持久化问题可以google解决
+
+### 安装启动mongodb
+
+```bash
+    echo "deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+
+    sudo apt-get update
+    sudo apt-get install -y mongodb-org
+    sudo service mongod start
+
+```
+
+### 配置前端开发环境
+
+1. 安装nvm
+```bash
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+```
+2. 配置环境变量,之后source
+```bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" 
+```
+
+2. 安装node
+```bash
+nvm intsall v6.10.2
+```
+
+3. 安装模块在static/myxterm下
+```bash
+npm install
+```
+
+4. 打包
+修改config.js中的域名为自己的域名，然后build
+```
+npm run build
+```
+
+### 启动
+运行tornado_server.py和sshserver.py
+
+------------------------------------
+## 客户端
+
+把client.py放过去,安装python(>=3.5)和库
