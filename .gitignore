@@ -2,3 +2,4 @@ node_modules/*
 __pycache__/*
 demo_server.log
 .vscode/*
+zeromq-4.2.1/*

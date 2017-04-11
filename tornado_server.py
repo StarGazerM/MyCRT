@@ -80,6 +80,7 @@ class LoginHandler(tornado.web.RequestHandler, SessionMixin):
         user = await _db.user.find_one({'username': username, 'password': password})
         if username is not None:
             self.session.set('user', user)
+            self.set_secure_cookie('shell_user', username)
             self.redirect('/dashboard')
         else:
             self.render('login.html')
@@ -103,6 +104,7 @@ class DashboardHandler(AuthencatedRequiredHandler):
 
     @tornado.web.authenticated
     def get(self):
+        print(self.get_secure_cookie("shell_user"))
         self.render('dashboard.html')
 
 
@@ -128,19 +130,25 @@ class ShellHandler(tornado.websocket.WebSocketHandler):
         super(ShellHandler, self).__init__(application, request, **kwargs)
         context = zmq.Context()
         self.socket = context.socket(zmq.PAIR)
-        self.session = SessionManager(self)
+        self.zstream = None
 
     def get_current_user(self):
-        user = self.session.get('user')
+        user = self.get_secure_cookie('shell_user')
         return user
 
     def open(self):
-        if not self.current_user:
-            self.write_message('please login')
+        # self.current_user = self.get_current_user()
+        # if not self.current_user:
+        #     self.write_message('please login')
+        #     self.close()
+        #     return
+        default_name = self.get_secure_cookie("shell_user")
+        print(default_name)
+        if not default_name:
             self.close()
             return
         username = self.get_argument(
-            'username', default=self.current_user['username'])
+            'username', default=default_name)
         self.socket.connect('ipc://' + username)
         self.zstream = zmqstream.ZMQStream(self.socket)
         self.zstream.on_recv(self.handle_recv)
@@ -151,7 +159,8 @@ class ShellHandler(tornado.websocket.WebSocketHandler):
         self.zstream.send_string(message)
 
     def on_close(self):
-        self.zstream.close()
+        if self.zstream:
+            self.zstream.close()
         print("WebSocket closed")
 
     def check_origin(self, origin):
@@ -241,6 +250,7 @@ def make_app():
         (r"/dashboard", DashboardHandler),
         (r"/logout", LogoutHandler),
     ], db=db, debug=True, **settings)
+
 
 if __name__ == "__main__":
     app = make_app()

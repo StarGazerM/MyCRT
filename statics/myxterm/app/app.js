@@ -5,7 +5,6 @@ import 'xterm/dist/xterm.css';
 let term = new Terminal({ cursorBlink: true });
 term.open(document.getElementById('#terminal'));
 term.writeln('Hello world ')
-term.fit()
 
 let socket = new WebSocket("ws://127.0.0.1:8888/shell")
 socket.onopen = runRealTerminal;

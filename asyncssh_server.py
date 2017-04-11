@@ -18,6 +18,7 @@ db = client.MyCRT
 
 executor = ThreadPoolExecutor(10)
 
+
 async def handle_session(stdin, stdout, stderr):
     print('start to handle session')
     username = await stdin.read()
@@ -37,13 +38,14 @@ async def handle_session(stdin, stdout, stderr):
 
 #     def data_received(self):
 #         self._
-    
+
 
 async def exchange_from_zmq_to_ssh(sock, ssh_writer):
     while True:
         data = await sock.recv_unicode()
         if len(data) != 0:
             await ssh_writer.write(data)
+
 
 async def exchange_from_ssh_to_zmq(ssh_reader, sock):
     while True:
@@ -82,9 +84,11 @@ class AsyncSSHServer(asyncssh.SSHServer):
         else:
             return False
 
+
 async def find_db(username, password):
     user = await db.user.find_one({'username': username, 'password': password})
     return user
+
 
 async def run_server():
     with open('id_rsa') as file:
