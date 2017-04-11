@@ -54,7 +54,8 @@ class Server (paramiko.ServerInterface):
         #     return paramiko.AUTH_SUCCESSFUL
         # return paramiko.AUTH_FAILED
         # future = loop.create_future(check_form_mongo, username, password)
-        user = db.MyCRT.user.find_one({'username': username, 'password':password})
+        user = db.MyCRT.user.find_one(
+            {'username': username, 'password': password})
         if user is not None:
             return paramiko.AUTH_SUCCESSFUL
         else:
@@ -115,6 +116,7 @@ DoGSSAPIKeyExchange = False
 
 # ssh_server = Server()
 
+
 async def async_ssh_handler(client):
 
     try:
@@ -131,13 +133,13 @@ async def async_ssh_handler(client):
             t.start_server(server=ssh_server)
         except paramiko.SSHException:
             print('*** SSH negotiation failed.')
-            sys.exit(1)
+            return
 
         # wait for auth
         chan = t.accept(20)
         if chan is None:
             print('*** No channel.')
-            sys.exit(1)
+            return
         print('Authenticated!')
         # chan.setblocking(0)
 
@@ -158,8 +160,10 @@ async def async_ssh_handler(client):
             pass
         sys.exit(1)
 
+
 async def recv_ssh(chan):
     return chan.recv(1024)
+
 
 async def read_from_zmq_to_ssh(sock, chan):
     while True:
@@ -167,11 +171,13 @@ async def read_from_zmq_to_ssh(sock, chan):
         if len(data) is not 0:
             await loop.run_in_executor(executor, chan.send, data)
 
+
 async def read_from_ssh_to_zmq(chan, sock):
     while True:
         data = await loop.run_in_executor(executor, chan.recv, 1024)
         if len(data) != 0:
             await sock.send(data)
+
 
 async def run_server():
     # now connect
@@ -197,8 +203,11 @@ async def run_server():
             traceback.print_exc()
             sys.exit(1)
         # create_ssh_transport(client) 10)
-        loop.create_task(async_ssh_handler(client))
         print('accepted')
+        try:
+            loop.create_task(async_ssh_handler(client))
+        except Exception as e:
+            print("create task failed  " + str(e))
 
 if __name__ == '__main__':
     # loop.set_debug(True)

@@ -70,6 +70,7 @@ zeromq部分可以独立展开支撑更多的功能
 ### 配置python环境
 1. 安装pyenv
 ```bash
+
     curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash  
 ```
 2. 在~/.bashrc末尾加入，配置pyenv环境变量，之后source ~/.bashrc
@@ -166,4 +167,4 @@ zeromq部分可以独立展开支撑更多的功能
 ------------------------------------
 ## 客户端
 
-把client.py放过去,安装python(>=3.5)和库
+把client.py放过去,安装python(>=3.5)和库,修改里面的变量

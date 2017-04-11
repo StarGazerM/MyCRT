@@ -13,7 +13,7 @@ def connect_ssh(host, port, username, password):
 
 def main():
     print('start')
-    remote_username = 'foo'
+    remote_username = 'foo1'
     remote_password = 'bar1'
     local_username = 'stargazer'
     local_password = 'Apple2011'
