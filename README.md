@@ -136,28 +136,28 @@ zeromq部分可以独立展开支撑更多的功能
 
 1. 安装nvm
 ```bash
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 ```
 2. 配置环境变量,之后source
 ```bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" 
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" 
 ```
 
 2. 安装node
 ```bash
-nvm intsall v6.10.2
+    nvm intsall v6.10.2
 ```
 
 3. 安装模块在static/myxterm下
 ```bash
-npm install
+    npm install
 ```
 
 4. 打包
 修改config.js中的域名为自己的域名，然后build
 ```
-npm run build
+    npm run build
 ```
 
 ### 启动
