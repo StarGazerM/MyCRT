@@ -240,7 +240,7 @@ def make_app():
         'cookie_secret': 'bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=',
     }
     return tornado.web.Application([
-        (r"/", MainHandler),
+        (r"/", DashboardHandler),
         (r"/xterm", XtermPageHandler),
         (r"/shell", ShellHandler),
         (r"/register", RegisterHandler),

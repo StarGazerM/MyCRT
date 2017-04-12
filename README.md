@@ -108,7 +108,7 @@ zeromq部分可以独立展开支撑更多的功能
     ./configure
     sudo make install
 ```
-### 安装启动redis
+### 安装启动redis（只使用命令行版本无需设置）
 1. 解压到~/目录下
 
 ```bash
@@ -133,7 +133,7 @@ zeromq部分可以独立展开支撑更多的功能
 
 ```
 
-### 配置前端开发环境
+### 配置前端开发环境（只使用命令行版本无需设置）
 
 1. 安装nvm
 ```bash
@@ -168,3 +168,26 @@ zeromq部分可以独立展开支撑更多的功能
 ## 客户端
 
 把client.py放过去,安装python(>=3.5)和库,修改里面的变量
+
+## 命令行版本
+
+0. 在mongodb数据库的MyCRT.user中插入一条用户数据 {'username': , 'password': , isOnline: false}, 并且配置config.py
+
+1. 脚本在cmd文件夹下，服务器端运行
+
+```
+    python mycrtd.py backend
+    python mycetd.py frontend
+```
+
+2. 被控制端
+
+```
+    python mycrtc.py passive
+```
+
+3. 控制端运行
+
+```
+    python mycrtc.py active
+```

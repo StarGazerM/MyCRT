@@ -9,6 +9,3 @@ chan = sshClient.invoke_shell()
 interactive.interactive_shell(chan)
 chan.close()
 sshClient.close()
-
-
-

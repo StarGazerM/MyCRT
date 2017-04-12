@@ -158,11 +158,14 @@ async def async_ssh_handler(client):
             t.close()
         except:
             pass
-        sys.exit(1)
+        # sys.exit(1)
 
 
 async def recv_ssh(chan):
     return chan.recv(1024)
+
+# async def recv_from_non_blocking_chan(chan):
+#     while True:
 
 
 async def read_from_zmq_to_ssh(sock, chan):
