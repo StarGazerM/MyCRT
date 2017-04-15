@@ -35,7 +35,6 @@
                     credentials: 'include',
                 })
                 .then((response) => {
-                    console.log(response)
                     return response.json()
                 }).then((data) => {
                     console.log(data[0])
@@ -46,6 +45,7 @@
         methods: {
             setXtermName: function(id) {
                 Bus.$emit('xtermChange', id)
+                console.log('xterm change emitted')
             }
         }
     }

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import BaseURL from '../../config.js'
+import Config from '../../config.js'
 
     export default{
         data: {
@@ -45,8 +45,8 @@ import BaseURL from '../../config.js'
                 if(this.username === '' | this.password === ''){
                     return
                 } 
-                console.log(this.username)
-                fetch(BaseURL + '/u/add_machine', {
+
+                fetch(Config.BaseURL + '/u/add_machine', {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
@@ -55,6 +55,7 @@ import BaseURL from '../../config.js'
                     body: 'username=' + this.username + '&' + 'password=' + this.password,
                 })
                 .then((response) => {
+                    console.log(response)
                     return response.json()
                 })
                 .then((data) => {

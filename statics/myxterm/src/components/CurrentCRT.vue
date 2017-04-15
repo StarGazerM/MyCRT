@@ -33,19 +33,26 @@ export default {
     data: function(){
         return {
             term: new Terminal({ cursorBlink: true }),
-            socket: new WebSocket(Config.WebsocketURL + '/shell'),
+            socket: null,
         }
     },
 
     created: function(){
+        console.log('current crt created')
+        if(this.socket === null){
+            this.socket = new WebSocket(Config.WebsocketURL + "/shell")
+        }
         Bus.$on('xtermChange', (id) => {
+            console.log(this.socket)
             this.socket.close()
             this.socket = new WebSocket(Config.WebsocketURL + "/shell?username=" + id);
+            // this.term.attach(this.socket)
             this.createTerminal();
         })
     },
 
     mounted:function(){
+        console.log('current crt mounted')
         this.createTerminal()
     },
 
@@ -55,10 +62,7 @@ export default {
 
     methods: {
         createTerminal: function(){
-            // this.socket = new WebSocket("ws://127.0.0.1:8888/shell?username=" + id);
             this.term.open(document.getElementById('terminal-container'));
-            console.log(document.getElementById('terminal-container'));
-    
             this.socket.onopen = this.runRealTerminal;
             this.socket.onclose = this.runFakeTerminal;
             this.socket.onerror = this.runFakeTerminal;
@@ -113,7 +117,7 @@ export default {
 
 <style>
 .main-view{
-    margin-left:35%;
+    margin-left:25%;
 }
 
 .sidebar {

@@ -33,6 +33,15 @@ class AuthencatedRequiredHandler(tornado.web.RequestHandler, SessionMixin):
         user = self.session.get('user')
         return user
 
+    async def flush_current_user(self):
+        '''
+        used to flush the current user in session
+        '''
+        _db = self.settings['db']
+        uid = self.current_user['_id']
+        current_user = await _db.user.find_one(uid)
+        self.session.set('user', current_user)
+
 
 class MainHandler(AuthencatedRequiredHandler):
     '''
@@ -181,6 +190,7 @@ class ListMachineHandler(AuthencatedRequiredHandler):
 
     @tornado.web.authenticated
     async def get(self):
+        await self.flush_current_user()
         machines = []
         machines.append(self.current_user)
         for m_id in self.current_user['machines']:
@@ -188,10 +198,8 @@ class ListMachineHandler(AuthencatedRequiredHandler):
             # machines.append({'_id': user['_id'], 'username': user['username'],
             #                  'isOnline': user['isOnline']})
             machines.append(user)
-
         print(bson.json_util.dumps(machines))
         self.write(bson.json_util.dumps(machines))
-        print("write")
 
 
 class AddMachineHandler(AuthencatedRequiredHandler):
@@ -206,14 +214,17 @@ class AddMachineHandler(AuthencatedRequiredHandler):
         username = self.get_argument('username')
         password = self.get_argument('password')
         u = await _db.user.find_one({'username': username, 'password': password})
+        print(u)
         if u is not None:
             machine_list.append(u['_id'])
             _db.user.update_one({'_id': self.current_user['_id']},
                                 {'$set': {'machines': machine_list}})
+            print(json.dumps({'ok': True, 'message': 'Successfully added!'}))
             self.write(json.dumps(
                 {'ok': True, 'message': 'Successfully added!'}))
-        self.write(json.dumps(
-            {'ok': False, 'message': 'There is no such user!'}))
+        else:
+            self.write(json.dumps(
+                {'ok': False, 'message': 'There is no such user!'}))
 
 
 def make_app():

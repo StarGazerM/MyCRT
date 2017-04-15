@@ -14,7 +14,7 @@ def connect_ssh(host, port, username, password):
 def main():
     print('start')
     remote_username = 'foo'
-    remote_password = 'bar1'
+    remote_password = 'bar'
     local_username = 'stargazer'
     local_password = 'Apple2011'
     client_local = connect_ssh('127.0.0.1', 22, local_username, local_password)
